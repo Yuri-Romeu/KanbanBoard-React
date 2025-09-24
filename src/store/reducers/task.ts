@@ -4,10 +4,10 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 type Task = {
      id: number;
      titleTask: string;
-     done: boolean;
+     done: boolean | 'processing';
 };
 
-const initialState = [
+const initialState: Task[] = [
      {
           id: 1,
           titleTask: 'Task 1',
@@ -26,7 +26,7 @@ const initialState = [
      {
           id: 4,
           titleTask: 'Task 4',
-          done: false,
+          done: 'processing',
      },
 ];
 
@@ -41,8 +41,18 @@ const taskSlice = createSlice({
           removeTask: (state, action: PayloadAction<number>) => {
                return state.filter(task => task.id !== action.payload);
           },
+
+          updateTaskStatus: (
+               state,
+               action: PayloadAction<{ id: number; done: boolean | 'processing' }>,
+          ) => {
+               const task = state.find(t => t.id === action.payload.id);
+               if (task) {
+                    task.done = action.payload.done;
+               }
+          },
      },
 });
 
-export const { addTask, removeTask } = taskSlice.actions;
+export const { addTask, removeTask, updateTaskStatus } = taskSlice.actions;
 export default taskSlice.reducer;

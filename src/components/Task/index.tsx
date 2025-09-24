@@ -2,13 +2,18 @@ import { Container, TitleTask } from './styles';
 
 type Props = {
      titleTask: string;
-     done: boolean;
+     done: boolean | 'processing';
 };
 
 const Task = ({ titleTask, done }: Props) => {
      return (
           <Container>
-               <input type="checkbox" checked={done} />
+               {done === 'processing' ? (
+                    <input type="checkbox" style={{ display: 'none' }} />
+               ) : (
+                    <input type="checkbox" checked={done} />
+               )}
+
                <TitleTask>{titleTask}</TitleTask>
           </Container>
      );
