@@ -25,7 +25,7 @@ const Columns = ({ title, color, type }: Props) => {
                <Title type="secondary">{title}</Title>
 
                {filteredTasks.map(task => (
-                    <Task key={task.id} titleTask={task.titleTask} done={task.done} />
+                    <Task id={task.id} key={task.id} titleTask={task.titleTask} done={task.done} />
                ))}
 
                {type === 'ToDO' && (
