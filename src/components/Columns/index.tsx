@@ -1,8 +1,9 @@
 import { Title } from '../../styles';
 import { AddTask, Content } from './styles';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import Task from '../Task';
+import { toggleModal } from '../../store/reducers/modal';
 
 type Props = {
      title: string;
@@ -12,6 +13,7 @@ type Props = {
 
 const Columns = ({ title, color, type }: Props) => {
      const tasks = useSelector((state: RootState) => state.task);
+     const dispatch = useDispatch();
 
      const filteredTasks = tasks.filter(task => {
           if (type === 'ToDO') return task.done === false;
@@ -19,6 +21,10 @@ const Columns = ({ title, color, type }: Props) => {
           if (type === 'Done') return task.done === true;
           return false;
      });
+
+     const handleAddTask = () => {
+          dispatch(toggleModal(true));
+     };
 
      return (
           <Content color={color}>
@@ -30,7 +36,7 @@ const Columns = ({ title, color, type }: Props) => {
 
                {type === 'ToDO' && (
                     <>
-                         <AddTask>+ Add Task</AddTask>
+                         <AddTask onClick={handleAddTask}>+ Add Task</AddTask>
                     </>
                )}
           </Content>

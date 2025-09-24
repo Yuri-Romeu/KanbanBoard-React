@@ -62,3 +62,14 @@ export const Button = styled.button`
      margin-top: 8px;
      cursor: pointer;
 `;
+
+export const Close = styled.button`
+     position: absolute;
+     top: 10px;
+     right: 10px;
+     background-color: transparent;
+     border: none;
+     font-size: 14px;
+     color: #1d1d1d;
+     cursor: pointer;
+`;

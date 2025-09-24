@@ -16,7 +16,7 @@ function App() {
                          <Columns title="Done" color="#E6DAF7" type="Done" />
                     </ColumnsWrapper>
                </Container>
-               <Modal isActive={true} />
+               <Modal />
           </Provider>
      );
 }

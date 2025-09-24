@@ -5,13 +5,13 @@ import { updateTaskStatus } from '../../store/reducers/task';
 type Props = {
      titleTask: string;
      done: boolean | 'processing';
-     id: number;
+     id: string;
 };
 
 const Task = ({ titleTask, done, id }: Props) => {
      const dispatch = useDispatch();
 
-     const handleUpdateTaskStatus = (id: number, done: boolean) => {
+     const handleUpdateTaskStatus = (id: string, done: boolean) => {
           dispatch(updateTaskStatus({ id, done }));
      };
 
