@@ -6,6 +6,7 @@ export const Container = styled.div`
      background-color: #fff;
      padding: 12px;
      border-radius: 8px;
+     cursor: pointer;
 `;
 
 export const TitleTask = styled.h1`
