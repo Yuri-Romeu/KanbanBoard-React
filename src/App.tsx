@@ -2,6 +2,7 @@ import Columns from './components/Columns';
 import { ColumnsWrapper, Container, Title } from './styles';
 import { Provider } from 'react-redux';
 import store from './store';
+import Modal from './components/Modal';
 
 function App() {
      return (
@@ -15,6 +16,7 @@ function App() {
                          <Columns title="Done" color="#E6DAF7" type="Done" />
                     </ColumnsWrapper>
                </Container>
+               <Modal isActive={true} />
           </Provider>
      );
 }
