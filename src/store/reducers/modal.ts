@@ -1,20 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type Props = {
+type ModalState = {
      isActive: boolean;
+     editingTaskId: string | null;
 };
 
-const initialState: Props = {
+const initialState: ModalState = {
      isActive: false,
+     editingTaskId: null,
 };
 
 const modalSlice = createSlice({
      name: 'modal',
      initialState,
      reducers: {
-          toggleModal: (state, action: PayloadAction<boolean>) => {
-               state.isActive = action.payload;
+          toggleModal: (
+               state,
+               action: PayloadAction<{ isActive: boolean; editingTaskId?: string | null }>,
+          ) => {
+               state.isActive = action.payload.isActive;
+               state.editingTaskId = action.payload.editingTaskId ?? null;
           },
      },
 });

@@ -3,28 +3,49 @@ import { Title } from '../../styles';
 import { Button, Close, Container, Input, Label, ModalContent, Overlay, Select } from './styles';
 import { toggleModal } from '../../store/reducers/modal';
 import type { RootState } from '../../store';
-import { useState } from 'react';
-import { addTask } from '../../store/reducers/task';
+import { useState, useEffect } from 'react';
+import { addTask, updateTask } from '../../store/reducers/task';
 import { v4 as uuidv4 } from 'uuid';
 
 const Modal = () => {
      const dispatch = useDispatch();
-     const { isActive } = useSelector((state: RootState) => state.modal);
+     const { isActive, editingTaskId } = useSelector((state: RootState) => state.modal);
+     const tasks = useSelector((state: RootState) => state.task);
 
      const [titleTask, setTitleTask] = useState('');
      const [done, setDone] = useState(false as boolean | 'processing');
 
+     // Se houver uma task em edição, preencher os campos
+     useEffect(() => {
+          if (editingTaskId) {
+               const task = tasks.find(t => t.id === editingTaskId);
+               if (task) {
+                    setTitleTask(task.titleTask);
+                    setDone(task.done);
+               }
+          } else {
+               setTitleTask('');
+               setDone(false);
+          }
+     }, [editingTaskId, tasks]);
+
      const handleCloseModal = () => {
-          dispatch(toggleModal(false));
+          dispatch(toggleModal({ isActive: false }));
      };
 
-     const handleCreateTask = () => {
-          const idUnico = uuidv4();
-
+     const handleSaveTask = () => {
           if (!titleTask) return alert('Preencha o título da tarefa');
-          dispatch(addTask({ id: idUnico, titleTask, done }));
-          setTitleTask('');
-          dispatch(toggleModal(false));
+
+          if (editingTaskId) {
+               // Atualiza a task existente
+               dispatch(updateTask({ id: editingTaskId, titleTask, done }));
+          } else {
+               // Cria nova task
+               const idUnico = uuidv4();
+               dispatch(addTask({ id: idUnico, titleTask, done }));
+          }
+
+          dispatch(toggleModal({ isActive: false }));
      };
 
      const parseTaskState = (value: string): boolean | 'processing' => {
@@ -41,7 +62,7 @@ const Modal = () => {
                     <Close onClick={handleCloseModal}>X</Close>
 
                     <Title type="primary" style={{ color: '#1d1d1d' }}>
-                         Criar tarefa
+                         {editingTaskId ? 'Editar tarefa' : 'Criar tarefa'}
                     </Title>
 
                     <Label htmlFor="titulo">Tarefa:</Label>
@@ -58,6 +79,7 @@ const Modal = () => {
                     <Select
                          name="estado"
                          id="estado"
+                         value={done === true ? 'true' : done === false ? 'false' : 'InProgress'}
                          onChange={e => setDone(parseTaskState(e.target.value))}
                     >
                          <option value="false">To Do</option>
@@ -65,8 +87,8 @@ const Modal = () => {
                          <option value="true">Done</option>
                     </Select>
 
-                    <Button type="submit" onClick={handleCreateTask}>
-                         Criar tarefa
+                    <Button type="submit" onClick={handleSaveTask}>
+                         {editingTaskId ? 'Salvar' : 'Criar tarefa'}
                     </Button>
                </ModalContent>
           </Container>

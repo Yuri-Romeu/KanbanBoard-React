@@ -24,7 +24,7 @@ const Columns = ({ title, color, type }: Props) => {
      });
 
      const handleAddTask = () => {
-          dispatch(toggleModal(true));
+          dispatch(toggleModal({ isActive: true }));
      };
 
      return (

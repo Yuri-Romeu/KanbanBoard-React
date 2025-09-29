@@ -10,6 +10,7 @@ import type { DropResult } from '@hello-pangea/dnd';
 import { FaTrash } from 'react-icons/fa';
 import { FaRegEdit } from 'react-icons/fa';
 import { FaTrashRestore } from 'react-icons/fa';
+import { toggleModal } from './store/reducers/modal';
 
 function Board() {
      const dispatch = useDispatch();
@@ -21,6 +22,11 @@ function Board() {
 
           if (destination.droppableId === 'Trash') {
                dispatch(removeTask(draggableId));
+               return;
+          }
+
+          if (destination.droppableId === 'Edit') {
+               dispatch(toggleModal({ isActive: true, editingTaskId: draggableId }));
                return;
           }
 
@@ -83,9 +89,37 @@ function Board() {
                     )}
                </Droppable>
 
-               <ContainerIcon backgroundColor="#4093e0" side="left">
-                    <FaRegEdit />
-               </ContainerIcon>
+               <Droppable droppableId="Edit">
+                    {(provided, snapshot) => (
+                         <ContainerIcon
+                              backgroundColor="#4093e0"
+                              side="left"
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              style={{
+                                   width: snapshot.isDraggingOver ? 200 : 60,
+                                   borderRadius: 8,
+                                   transition: 'width 0.2s',
+                                   display: 'flex',
+                                   alignItems: 'center',
+                                   padding: '20px',
+                                   justifyContent: snapshot.isDraggingOver ? 'flex-end' : 'center',
+                              }}
+                         >
+                              <span
+                                   style={{
+                                        display: 'inline-block',
+                                        transition: 'transform 0.2s',
+                                        transform: snapshot.isDraggingOver
+                                             ? 'scale(1.3)'
+                                             : 'scale(1)',
+                                   }}
+                              >
+                                   <FaRegEdit />
+                              </span>
+                         </ContainerIcon>
+                    )}
+               </Droppable>
           </DragDropContext>
      );
 }
