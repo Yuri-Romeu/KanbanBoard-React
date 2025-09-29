@@ -14,6 +14,10 @@ export const Content = styled.div<Props>`
      border-radius: 12px;
      width: 20%;
      position: relative;
+
+     @media (max-width: 768px) {
+          width: 100%;
+     }
 `;
 
 export const AddTask = styled.button`

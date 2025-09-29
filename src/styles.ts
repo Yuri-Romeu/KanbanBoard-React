@@ -33,12 +33,23 @@ export const Container = styled.div`
      display: flex;
      flex-direction: column;
      gap: 1rem;
+
+     @media (max-width: 768px) {
+          max-width: 720px;
+          padding: 0.5rem;
+          width: 100%;
+     }
 `;
 
 export const ColumnsWrapper = styled.div`
      display: flex;
      justify-content: space-around;
      gap: 2rem;
+
+     @media (max-width: 768px) {
+          flex-direction: column;
+          align-items: center;
+     }
 `;
 
 export const Title = styled.h1<Props>`
