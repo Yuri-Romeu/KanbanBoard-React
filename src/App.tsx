@@ -1,11 +1,15 @@
-import { DragDropContext } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import Columns from './components/Columns';
-import { ColumnsWrapper, Container, Title } from './styles';
+import { ColumnsWrapper, Container, ContainerIcon, Title } from './styles';
 import { Provider, useDispatch } from 'react-redux';
 import store from './store';
+import { removeTask } from './store/reducers/task';
 import Modal from './components/Modal';
 import { updateTaskStatus } from './store/reducers/task';
 import type { DropResult } from '@hello-pangea/dnd';
+import { FaTrash } from 'react-icons/fa';
+import { FaRegEdit } from 'react-icons/fa';
+import { FaTrashRestore } from 'react-icons/fa';
 
 function Board() {
      const dispatch = useDispatch();
@@ -14,6 +18,12 @@ function Board() {
           const { source, destination, draggableId } = result;
 
           if (!destination) return;
+
+          if (destination.droppableId === 'Trash') {
+               dispatch(removeTask(draggableId));
+               return;
+          }
+
           if (
                source.droppableId === destination.droppableId &&
                source.index === destination.index
@@ -44,6 +54,38 @@ function Board() {
                     </ColumnsWrapper>
                </Container>
                <Modal />
+
+               <Droppable droppableId="Trash">
+                    {(provided, snapshot) => (
+                         <ContainerIcon
+                              backgroundColor="#e0404e"
+                              side="right"
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              style={{
+                                   width: snapshot.isDraggingOver ? 200 : 60,
+                                   borderRadius: 8,
+                                   transition: 'width 0.2s',
+                              }}
+                         >
+                              <span
+                                   style={{
+                                        display: 'inline-block',
+                                        transition: 'transform 0.2s',
+                                        transform: snapshot.isDraggingOver
+                                             ? 'scale(1.3)'
+                                             : 'scale(1)',
+                                   }}
+                              >
+                                   {snapshot.isDraggingOver ? <FaTrashRestore /> : <FaTrash />}
+                              </span>
+                         </ContainerIcon>
+                    )}
+               </Droppable>
+
+               <ContainerIcon backgroundColor="#4093e0" side="left">
+                    <FaRegEdit />
+               </ContainerIcon>
           </DragDropContext>
      );
 }

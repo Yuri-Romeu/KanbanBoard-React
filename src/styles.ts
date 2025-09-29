@@ -5,6 +5,11 @@ type Props = {
      type: 'primary' | 'secondary';
 };
 
+type ContainerButtonProps = {
+     backgroundColor: string;
+     side: 'left' | 'right';
+};
+
 export const GlobalStyled = createGlobalStyle`
     * {
         margin: 0;
@@ -42,4 +47,20 @@ export const Title = styled.h1<Props>`
      font-size: ${({ type }) => (type === 'primary' ? '2rem' : '1.5rem')};
      margin-left: ${({ type }) => (type === 'primary' ? 0 : '2px')};
      margin-bottom: 8px;
+`;
+
+export const ContainerIcon = styled.div<ContainerButtonProps>`
+     padding: 20px;
+     background-color: ${props => props.backgroundColor};
+     border-radius: 8px;
+     cursor: pointer;
+     opacity: 0.6;
+     position: absolute;
+     bottom: 5px;
+     transition: opacity 0.3s ease-in-out;
+     ${props => (props.side === 'left' ? 'left: 10px' : 'right: 10px')};
+
+     &:hover {
+          opacity: 1;
+     }
 `;
