@@ -20,17 +20,18 @@ const Modal = () => {
 
      const handleCreateTask = () => {
           const idUnico = uuidv4();
+
           if (!titleTask) return alert('Preencha o título da tarefa');
           dispatch(addTask({ id: idUnico, titleTask, done }));
           setTitleTask('');
           dispatch(toggleModal(false));
      };
 
-     function parseTaskState(value: string): boolean | 'processing' {
+     const parseTaskState = (value: string): boolean | 'processing' => {
           if (value === 'true') return true;
           if (value === 'false') return false;
           return 'processing';
-     }
+     };
 
      return (
           <Container isActive={isActive}>

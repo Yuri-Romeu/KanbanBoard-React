@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import Task from '../Task';
 import { toggleModal } from '../../store/reducers/modal';
+import { Droppable } from '@hello-pangea/dnd';
 
 type Props = {
      title: string;
@@ -27,19 +28,27 @@ const Columns = ({ title, color, type }: Props) => {
      };
 
      return (
-          <Content color={color}>
-               <Title type="secondary">{title}</Title>
+          <Droppable droppableId={type}>
+               {provided => (
+                    <Content color={color} ref={provided.innerRef} {...provided.droppableProps}>
+                         <Title type="secondary">{title}</Title>
 
-               {filteredTasks.map(task => (
-                    <Task id={task.id} key={task.id} titleTask={task.titleTask} done={task.done} />
-               ))}
+                         {filteredTasks.map((task, index) => (
+                              <Task
+                                   id={task.id}
+                                   key={task.id}
+                                   titleTask={task.titleTask}
+                                   done={task.done}
+                                   index={index}
+                              />
+                         ))}
 
-               {type === 'ToDO' && (
-                    <>
-                         <AddTask onClick={handleAddTask}>+ Add Task</AddTask>
-                    </>
+                         {provided.placeholder}
+
+                         {type === 'ToDO' && <AddTask onClick={handleAddTask}>+ Add Task</AddTask>}
+                    </Content>
                )}
-          </Content>
+          </Droppable>
      );
 };
 

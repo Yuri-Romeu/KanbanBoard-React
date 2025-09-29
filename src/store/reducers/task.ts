@@ -53,6 +53,14 @@ const taskSlice = createSlice({
                     task.done = action.payload.done;
                }
           },
+
+          updateTask: (state, action: PayloadAction<Task>) => {
+               const task = state.find(t => t.id === action.payload.id);
+               if (task) {
+                    task.titleTask = action.payload.titleTask;
+                    task.done = action.payload.done;
+               }
+          },
      },
 });
 
