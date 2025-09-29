@@ -33,6 +33,12 @@ const Columns = ({ title, color, type }: Props) => {
                     <Content color={color} ref={provided.innerRef} {...provided.droppableProps}>
                          <Title type="secondary">{title}</Title>
 
+                         {filteredTasks.length === 0 && (
+                              <Title type="secondary" style={{ color: '#999' }}>
+                                   Empty
+                              </Title>
+                         )}
+
                          {filteredTasks.map((task, index) => (
                               <Task
                                    id={task.id}

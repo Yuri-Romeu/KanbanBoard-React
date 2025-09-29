@@ -62,20 +62,20 @@ const Modal = () => {
                     <Close onClick={handleCloseModal}>X</Close>
 
                     <Title type="primary" style={{ color: '#1d1d1d' }}>
-                         {editingTaskId ? 'Editar tarefa' : 'Criar tarefa'}
+                         {editingTaskId ? 'Edit task' : 'Create task'}
                     </Title>
 
-                    <Label htmlFor="titulo">Tarefa:</Label>
+                    <Label htmlFor="titulo">Task:</Label>
                     <Input
                          type="text"
-                         placeholder="Título da tarefa"
+                         placeholder="Task title"
                          id="titulo"
                          value={titleTask}
                          onChange={e => setTitleTask(e.target.value)}
                     />
                     <br />
 
-                    <Label htmlFor="estado">Estado da Tarefa:</Label>
+                    <Label htmlFor="estado">Task status:</Label>
                     <Select
                          name="estado"
                          id="estado"
@@ -88,7 +88,7 @@ const Modal = () => {
                     </Select>
 
                     <Button type="submit" onClick={handleSaveTask}>
-                         {editingTaskId ? 'Salvar' : 'Criar tarefa'}
+                         {editingTaskId ? 'Save' : 'Create task'}
                     </Button>
                </ModalContent>
           </Container>

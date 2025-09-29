@@ -7,28 +7,22 @@ type Task = {
      done: boolean | 'processing';
 };
 
-const initialState: Task[] = [
-     {
-          id: '1',
-          titleTask: 'Task 1',
-          done: false,
-     },
-     {
-          id: '2',
-          titleTask: 'Task 2',
-          done: false,
-     },
-     {
-          id: '3',
-          titleTask: 'Task 3',
-          done: true,
-     },
-     {
-          id: '4',
-          titleTask: 'Task 4',
-          done: 'processing',
-     },
-];
+const loadTasksFromStorage = (): Task[] => {
+     const stored = localStorage.getItem('tasks');
+     if (stored) {
+          try {
+               return JSON.parse(stored) as Task[];
+          } catch {
+               return [];
+          }
+     }
+     return [];
+};
+
+const initialState: Task[] = loadTasksFromStorage();
+const saveTasksToStorage = (tasks: Task[]) => {
+     localStorage.setItem('tasks', JSON.stringify(tasks));
+};
 
 const taskSlice = createSlice({
      name: 'task',
@@ -36,12 +30,15 @@ const taskSlice = createSlice({
      reducers: {
           addTask: (state, action: PayloadAction<Task>) => {
                if (state.find(task => task.titleTask === action.payload.titleTask))
-                    return alert('Tarefa já existente');
+                    return alert('Tarefa já existente');
                state.push(action.payload);
+               saveTasksToStorage(state);
           },
 
           removeTask: (state, action: PayloadAction<string>) => {
-               return state.filter(task => task.id !== action.payload);
+               const newState = state.filter(task => task.id !== action.payload);
+               saveTasksToStorage(newState);
+               return newState;
           },
 
           updateTaskStatus: (
@@ -51,6 +48,7 @@ const taskSlice = createSlice({
                const task = state.find(t => t.id === action.payload.id);
                if (task) {
                     task.done = action.payload.done;
+                    saveTasksToStorage(state);
                }
           },
 
@@ -59,6 +57,7 @@ const taskSlice = createSlice({
                if (task) {
                     task.titleTask = action.payload.titleTask;
                     task.done = action.payload.done;
+                    saveTasksToStorage(state);
                }
           },
      },
